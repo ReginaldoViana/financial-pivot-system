@@ -1,0 +1,27 @@
+<div class="chart-container">
+	<div class="chart-toolbar">
+		<button mat-button [matMenuTriggerFor]="chartMenu">
+			<mat-icon>{{ getCurrentChartIcon() }}</mat-icon>
+			{{ getCurrentChartLabel() }}
+		</button>
+		<mat-menu #chartMenu="matMenu">
+			<button mat-menu-item
+							*ngFor="let type of availableChartTypes"
+							(click)="changeChartType(type.id)"
+							[class.selected]="isCurrentChartType(type.id)">
+				<mat-icon>{{ type.icon }}</mat-icon>
+				<span>{{ type.label }}</span>
+			</button>
+		</mat-menu>
+	</div>
+
+	<h3 class="chart-title">{{ getCurrentChartLabel() }}</h3>
+
+	<div class="chart-wrapper">
+		<canvas baseChart
+						[type]="chartType"
+						[data]="chartData"
+						[options]="chartOptions">
+		</canvas>
+	</div>
+</div>

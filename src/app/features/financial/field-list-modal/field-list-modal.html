@@ -1,0 +1,170 @@
+<div class="modal-header">
+	<h2>Campos</h2>
+	<button mat-stroked-button class="add-calculated-btn" (click)="openCalculatedFieldModal()">
+		Adicionar valor calculado
+		<mat-icon>calculate</mat-icon>
+	</button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+	<div class="fields-layout">
+    
+		<!-- Coluna Esquerda: Campos Disponiveis -->
+		<div class="available-fields">
+			<mat-form-field class="search-field" appearance="outline">
+				<mat-label>Buscar campos</mat-label>
+				<input matInput [(ngModel)]="searchTerm" placeholder="Todos os campos">
+				<mat-icon matPrefix>search</mat-icon>
+			</mat-form-field>
+
+			<div class="fields-list">
+				<div *ngFor="let field of filteredFields" class="field-item">
+					<mat-checkbox
+						[checked]="isFieldSelected(field)"
+						(change)="toggleFieldSelection(field, $event)">
+						{{ field.displayName }}
+					</mat-checkbox>
+				</div>
+			</div>
+		</div>
+
+		<!-- Coluna Central: Filtros e Linhas -->
+		<div class="drop-areas-left">
+      
+			<!-- Area de Filtros -->
+			<div class="drop-area">
+				<h3>Filtros</h3>
+				<div 
+					class="drop-zone"
+					cdkDropList
+					#filterList="cdkDropList"
+					[cdkDropListData]="filterFields"
+					[cdkDropListConnectedTo]="[rowList, columnList, valueList]"
+					(cdkDropListDropped)="drop($event)">
+          
+					<div *ngIf="filterFields.length === 0" class="empty-drop">
+						Arraste um campo aqui
+					</div>
+
+					<div 
+						*ngFor="let field of filterFields"
+						class="dropped-field"
+						cdkDrag>
+						<span>{{ field.displayName }}</span>
+						<button mat-icon-button (click)="removeField(field, 'filter')">
+							<mat-icon>close</mat-icon>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Area de Linhas -->
+			<div class="drop-area">
+				<h3>Linhas</h3>
+				<div 
+					class="drop-zone"
+					cdkDropList
+					#rowList="cdkDropList"
+					[cdkDropListData]="rowFields"
+					[cdkDropListConnectedTo]="[filterList, columnList, valueList]"
+					(cdkDropListDropped)="drop($event)">
+          
+					<div *ngIf="rowFields.length === 0" class="empty-drop">
+						Arraste um campo aqui
+					</div>
+
+					<div 
+						*ngFor="let field of rowFields"
+						class="dropped-field"
+						cdkDrag>
+						<span>{{ field.displayName }}</span>
+						<button mat-icon-button (click)="removeField(field, 'row')">
+							<mat-icon>close</mat-icon>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Coluna Direita: Colunas e Valores -->
+		<div class="drop-areas-right">
+      
+			<!-- Area de Colunas -->
+			<div class="drop-area">
+				<h3>Colunas</h3>
+				<div 
+					class="drop-zone"
+					cdkDropList
+					#columnList="cdkDropList"
+					[cdkDropListData]="columnFields"
+					[cdkDropListConnectedTo]="[filterList, rowList, valueList]"
+					(cdkDropListDropped)="drop($event)">
+          
+					<div *ngIf="columnFields.length === 0" class="empty-drop">
+						Arraste um campo aqui
+					</div>
+
+					<div 
+						*ngFor="let field of columnFields"
+						class="dropped-field"
+						cdkDrag>
+						<span>{{ field.displayName }}</span>
+						<button mat-icon-button (click)="removeField(field, 'column')">
+							<mat-icon>close</mat-icon>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Area de Valores -->
+			<div class="drop-area">
+				<h3>Valores</h3>
+				<div 
+					class="drop-zone"
+					cdkDropList
+					#valueList="cdkDropList"
+					[cdkDropListData]="valueFields"
+					[cdkDropListConnectedTo]="[filterList, rowList, columnList]"
+					(cdkDropListDropped)="drop($event)">
+          
+					<div *ngIf="valueFields.length === 0" class="empty-drop">
+						Arraste um campo aqui
+					</div>
+
+					<div 
+						*ngFor="let field of valueFields"
+						class="dropped-field value-field"
+						cdkDrag>
+						<mat-icon class="aggregation-icon">functions</mat-icon>
+						<span>{{ field.displayName }}</span>
+            
+						<button 
+							mat-icon-button 
+							[matMenuTriggerFor]="aggMenu"
+							class="agg-button">
+							<mat-icon>expand_more</mat-icon>
+						</button>
+            
+						<mat-menu #aggMenu="matMenu">
+							<button mat-menu-item (click)="changeAggregation(field, 'sum')">Soma</button>
+							<button mat-menu-item (click)="changeAggregation(field, 'avg')">Média</button>
+							<button mat-menu-item (click)="changeAggregation(field, 'min')">Mínimo</button>
+							<button mat-menu-item (click)="changeAggregation(field, 'max')">Máximo</button>
+							<button mat-menu-item (click)="changeAggregation(field, 'count')">Contagem</button>
+						</mat-menu>
+
+						<button mat-icon-button (click)="removeField(field, 'value')">
+							<mat-icon>close</mat-icon>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+	<button mat-button (click)="cancel()">CANCELAR</button>
+	<button mat-raised-button color="primary" (click)="apply()">APLICAR</button>
+</mat-dialog-actions>

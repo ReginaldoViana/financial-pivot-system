@@ -1,0 +1,77 @@
+<mat-toolbar color="primary" class="toolbar">
+  <button mat-icon-button matTooltip="Atualizar dados" (click)="onRefresh()">
+    <mat-icon>refresh</mat-icon>
+  </button>
+
+  <button mat-icon-button matTooltip="Abrir arquivo" (click)="onOpen()">
+    <mat-icon>folder_open</mat-icon>
+  </button>
+
+  <button mat-icon-button matTooltip="Salvar" (click)="onSave()">
+    <mat-icon>save</mat-icon>
+  </button>
+
+  <mat-divider [vertical]="true" class="toolbar-divider"></mat-divider>
+
+  <button mat-icon-button [matMenuTriggerFor]="chartMenu" matTooltip="Tipo de gráfico">
+    <mat-icon>bar_chart</mat-icon>
+  </button>
+  <mat-menu #chartMenu="matMenu">
+    <button mat-menu-item (click)="onChartChange('bar')">
+      <mat-icon>bar_chart</mat-icon>
+      <span>Barras</span>
+    </button>
+    <button mat-menu-item (click)="onChartChange('line')">
+      <mat-icon>show_chart</mat-icon>
+      <span>Linha</span>
+    </button>
+    <button mat-menu-item (click)="onChartChange('pie')">
+      <mat-icon>pie_chart</mat-icon>
+      <span>Pizza</span>
+    </button>
+    <button mat-menu-item (click)="onChartChange('doughnut')">
+      <mat-icon>donut_large</mat-icon>
+      <span>Rosca</span>
+    </button>
+    <button mat-menu-item (click)="onChartChange('radar')">
+      <mat-icon>radar</mat-icon>
+      <span>Radar</span>
+    </button>
+  </mat-menu>
+
+  <button mat-icon-button matTooltip="Configurar campos" (click)="onFieldsClick()">
+    <mat-icon>tune</mat-icon>
+  </button>
+
+  <mat-divider [vertical]="true" class="toolbar-divider"></mat-divider>
+
+  <button mat-icon-button [matMenuTriggerFor]="exportMenu" matTooltip="Exportar dados">
+    <mat-icon>download</mat-icon>
+  </button>
+  <mat-menu #exportMenu="matMenu">
+    <button mat-menu-item (click)="onExport('print')">
+      <mat-icon>print</mat-icon>
+      <span>Imprimir</span>
+    </button>
+    <button mat-menu-item (click)="onExport('excel')">
+      <mat-icon>table_chart</mat-icon>
+      <span>Excel</span>
+    </button>
+    <button mat-menu-item (click)="onExport('pdf')">
+      <mat-icon>picture_as_pdf</mat-icon>
+      <span>PDF</span>
+    </button>
+    <button mat-menu-item (click)="onExport('csv')">
+      <mat-icon>description</mat-icon>
+      <span>CSV</span>
+    </button>
+    <button mat-menu-item (click)="onExport('html')">
+      <mat-icon>code</mat-icon>
+      <span>HTML</span>
+    </button>
+  </mat-menu>
+
+  <button mat-icon-button matTooltip="Tela cheia" (click)="onFullscreen()">
+    <mat-icon>fullscreen</mat-icon>
+  </button>
+</mat-toolbar>

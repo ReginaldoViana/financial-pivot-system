@@ -1,0 +1,73 @@
+<div class="modal-header">
+	<h2>Valor Calculado</h2>
+	<div class="header-actions">
+		<button mat-button (click)="cancel()">CANCELAR</button>
+		<button 
+			mat-raised-button 
+			color="primary" 
+			(click)="apply()"
+			[disabled]="!isValid || !fieldName.trim()">
+			APLICAR
+		</button>
+	</div>
+</div>
+
+<mat-dialog-content class="dialog-content">
+	<mat-form-field class="full-width" appearance="outline">
+		<input 
+			matInput 
+			[(ngModel)]="fieldName" 
+			placeholder="Nome do campo calculado"
+			(input)="validateFormula()">
+	</mat-form-field>
+
+	<div class="calculator-layout">
+		<div class="fields-panel">
+			<mat-form-field class="search-field" appearance="outline">
+				<input matInput [(ngModel)]="searchTerm" placeholder="Todos os campos">
+				<mat-icon matPrefix>search</mat-icon>
+				<button mat-icon-button matSuffix *ngIf="searchTerm" (click)="searchTerm = ''">
+					<mat-icon>close</mat-icon>
+				</button>
+			</mat-form-field>
+
+			<div class="fields-list">
+				<div 
+					class="field-item"
+					*ngFor="let field of filteredFields"
+					(click)="addFieldToFormula(field)"
+					draggable="true">
+					<span class="field-name">{{ field.displayName }}</span>
+					<span class="field-aggregation">({{ getAggregationLabel(field) }})</span>
+					<div class="field-actions">
+						<mat-icon class="sigma-icon">functions</mat-icon>
+						<mat-icon class="drag-icon">drag_indicator</mat-icon>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="formula-panel">
+			<div class="calculator">
+				<div *ngFor="let row of calculatorButtons" class="calculator-row">
+					<button 
+						*ngFor="let btn of row"
+						mat-button
+						[class.function-btn]="btn.type === 'function'"
+						[class.operator-btn]="btn.type === 'operator'"
+						(click)="addToFormula(btn.value)">
+						{{ btn.label }}
+					</button>
+				</div>
+			</div>
+
+			<textarea 
+				class="formula-editor"
+				[(ngModel)]="formula"
+				(input)="validateFormula()"
+				placeholder="Arraste os campos e edite a fórmula aqui"
+				rows="6">
+			</textarea>
+		</div>
+	</div>
+</mat-dialog-content>

@@ -1,0 +1,46 @@
+.chart-container {
+	background: #fff;
+	border-radius: 4px;
+	padding: 16px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.chart-toolbar {
+	display: flex;
+	justify-content: flex-start;
+
+	button {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+}
+
+.chart-title {
+	margin: 0;
+	font-size: 18px;
+	font-weight: 500;
+	color: #333;
+	text-align: center;
+}
+
+.chart-wrapper {
+	flex: 1;
+	min-height: 400px;
+	position: relative;
+
+	canvas {
+		max-width: 100%;
+	}
+}
+
+::ng-deep .mat-mdc-menu-item.selected {
+	background-color: rgba(63, 81, 181, 0.1);
+	
+	.mat-icon {
+		color: #3f51b5;
+	}
+}

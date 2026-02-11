@@ -1,0 +1,51 @@
+<div class="pivot-table-container">
+  <table mat-table [dataSource]="getFlattenedRows(pivotData?.rows || [])" class="mat-elevation-z2">
+    
+    <!-- Coluna de Label/Hierarquia -->
+    <ng-container matColumnDef="label">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="header-cell">
+          <span class="header-label">TIPO</span>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let row" [ngStyle]="getRowStyle(row)">
+        <div class="cell-content">
+          <button mat-icon-button 
+                  *ngIf="row.children && row.children.length > 0"
+                  (click)="toggleExpand(row)">
+            <mat-icon>{{ row.expanded ? 'expand_more' : 'chevron_right' }}</mat-icon>
+          </button>
+          <span class="cell-label">{{ row.label }}</span>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Colunas dinâmicas de valores -->
+    <ng-container *ngFor="let col of dynamicColumns" [matColumnDef]="col.id">
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="header-group">
+          <div class="header-group-title" *ngIf="col.showGroupTitle">{{ col.groupTitle }}</div>
+          <div class="header-subgroup">{{ col.label }}</div>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <span [ngClass]="getValueClass(row.values[col.valueKey] || 0)">
+          {{ formatCurrency(row.values[col.valueKey] || 0) }}
+        </span>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <!-- Linha de total geral -->
+  <div class="grand-total" *ngIf="pivotData">
+    <div class="total-label">Total geral</div>
+    <div class="total-values">
+      <span *ngFor="let col of getGrandTotalColumns()">
+        {{ formatCurrency(pivotData.grandTotal[col] || 0) }}
+      </span>
+    </div>
+  </div>
+</div>
